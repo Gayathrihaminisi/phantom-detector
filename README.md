@@ -271,4 +271,66 @@ While this hackathon release operates client-side with a modular service layer, 
 
 ---
 
+## 13. Deployment Guide: GitHub, Vercel & Render
+
+### Step 1: Push Code to GitHub
+
+1. Create a new empty repository on [GitHub](https://github.com/new) (e.g., named `phantom-detector`). **Do not** initialize it with a README, .gitignore, or license (these already exist locally).
+2. Open your terminal in this project folder and run:
+   ```bash
+   git remote add origin https://github.com/<your-github-username>/phantom-detector.git
+   git branch -M main
+   git push -u origin main
+   ```
+   *(Replace `<your-github-username>` with your actual GitHub username).*
+
+---
+
+### Step 2: Deploy to Vercel (Recommended)
+
+1. Log in to [Vercel](https://vercel.com).
+2. Click **Add New…** → **Project**.
+3. Import your GitHub repository (`phantom-detector`).
+4. Configure Project settings:
+   - **Framework Preset**: `Vite`
+   - **Root Directory**: `./`
+   - **Build Command**: `npm run build`
+   - **Output Directory**: `dist`
+   - **Install Command**: `npm install`
+5. Click **Deploy**.
+6. The repository includes [`vercel.json`](./vercel.json) which automatically configures SPA routing rewrites so page reloads on sub-routes (`/inspections`, `/inventory`, `/data-management`) never result in 404 errors.
+
+---
+
+### Step 3: Deploy to Render
+
+You can deploy to [Render](https://render.com) using either the pre-configured Blueprint or as a manual Static Site:
+
+#### Option A: Using Render Blueprint (One-Click)
+1. Go to your [Render Dashboard](https://dashboard.render.com).
+2. Click **New +** → **Blueprint**.
+3. Select your connected GitHub repository.
+4. Render will automatically read [`render.yaml`](./render.yaml) and configure:
+   - **Type**: Static Site
+   - **Build Command**: `npm run build`
+   - **Publish Directory**: `./dist`
+   - **SPA Rewrite Rule**: `/*` → `/index.html`
+5. Click **Apply**.
+
+#### Option B: Manual Static Site Setup
+1. In Render Dashboard, click **New +** → **Static Site**.
+2. Connect your GitHub repository.
+3. Configure:
+   - **Name**: `phantom-detector`
+   - **Branch**: `main`
+   - **Build Command**: `npm run build`
+   - **Publish Directory**: `dist`
+4. In **Redirects/Rewrites**, add:
+   - **Type**: `Rewrite`
+   - **Source**: `/*`
+   - **Destination**: `/index.html`
+5. Click **Create Static Site**.
+
+---
+
 *Developed for the AP Talent Hackathon 2026.*
