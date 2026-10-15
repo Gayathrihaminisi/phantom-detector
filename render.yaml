@@ -1,7 +1,7 @@
 services:
   - type: web
     name: phantom-stockout-detector
-    env: static
+    runtime: static
     buildCommand: npm run build
     staticPublishPath: ./dist
     envVars:
